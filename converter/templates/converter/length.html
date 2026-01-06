@@ -1,0 +1,56 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Length Converter</title>
+</head>
+<body>
+    <h1>Length Converter</h1>
+
+    <p><a href="/">← Back to Home</a></p>
+    <form method="POST" action="{% url 'length' %}">
+        {% csrf_token %}
+        <label>
+            Value:
+            <input type="text" name="value" value="{{ value }}" />
+        </label>
+
+        <br><br>
+
+        <label>
+            From:
+            <select name="from_unit">
+                {% for u in units %}
+                  <option value="{{u}}" {% if u == from_unit %}selected{% endif %}>{{ u }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <br><br>
+
+        <label>
+            To:
+            <select name="to_unit">
+                {% for u in units %}
+                  <option value="{{ u }}" {% if u == to_unit %}selected{% endif %}>{{ u }}</option>
+                {% endfor %}
+            </select>
+        </label>
+
+        <br><br>
+
+        <button type="submit">Convert</button>
+    </form>
+
+    <hr>
+        {% if error %}
+            <p style="color: red;"><strong>{{ error }}</strong></p>
+        {% endif %}
+    
+        {% if result is not None %}
+            <p>
+                <strong>Result:</strong>
+                {{ value }} {{ from_unit }} = {{ result }} {{ to_unit }}
+            </p>
+        {% endif %}
+</body>
+</html>
